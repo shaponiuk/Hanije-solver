@@ -1,23 +1,6 @@
 import kotlin.collections.ArrayList
 import kotlin.collections.HashSet
 
-fun buildBasicConfig(config: Collection<Int>, n: Int): Array<Array<Boolean>> {
-    val ar = Array(n) {
-        Array(n) {
-            false
-        }
-    }
-
-    for (i in config) {
-        val ii = i - 1
-        val r = ii / n
-        val c = ii % n
-        ar[r][c] = true
-    }
-
-    return ar
-}
-
 fun genCombinations(gens: ArrayList<HashSet<Collection<Int>>>): Collection<HashSet<Collection<Int>>> {
     val al = ArrayList<HashSet<Collection<Int>>>()
 
@@ -42,7 +25,77 @@ fun genCombinations(gens: ArrayList<HashSet<Collection<Int>>>): Collection<HashS
     }
 }
 
-fun buildConfigs(vC: List<List<Int>>, n: Int): Collection<Collection<Collection<Int>>> {
+fun gFilter(config: List<List<Int>>, hC: List<List<Int>>, k: Int, n: Int): Boolean {
+    val ar = Array(n) {
+        Array(n) {
+            false
+        }
+    }
+
+    for ((i, l) in config.withIndex()) {
+        for (v in l) {
+            ar[i][v - 1] = true
+        }
+    }
+
+    /*for (a1 in ar) {
+        var str = ""
+        for (a2 in a1) {
+            if (a2) {
+                str += "*"
+            } else {
+                str += "."
+            }
+        }
+        println(str)
+    }
+    println()*/
+
+    for ((col, constraint) in hC.withIndex()) {
+        var new = true
+        val ali = ArrayList<Int>()
+
+        for (i in 0 until k) {
+            if (ar[i][col]) {
+                if (new) {
+                    ali.add(1)
+                    new = false
+                } else {
+                    ali[ali.size - 1] = ali[ali.size - 1] + 1
+                }
+            } else {
+                new = true
+            }
+        }
+
+        if (!new) {
+            ali.removeAt(ali.size - 1)
+        }
+
+        //println(ali)
+        //println(constraint)
+
+        when {
+            ali.size > constraint.size -> return false
+            ali.size == constraint.size -> {
+                if (ali != constraint) {
+                    return false
+                }
+            }
+            else -> {
+                for ((j, value) in ali.withIndex()) {
+                    if (value != constraint[j]) {
+                        return false
+                    }
+                }
+            }
+        }
+    }
+
+    return true
+}
+
+fun buildConfigs(vC: List<List<Int>>, hC: List<List<Int>>, n: Int): Collection<Collection<Collection<Int>>> {
     var gens = ArrayList<ArrayList<ArrayList<Int>>>()
 
     val sum = vC[0].sum()
@@ -125,7 +178,15 @@ fun buildConfigs(vC: List<List<Int>>, n: Int): Collection<Collection<Collection<
             }
         }
 
-        gens = gens2
+        val gens2f = gens2.filter {
+            gFilter(it, hC, i + 1, n)
+        }
+
+        gens = ArrayList()
+
+        for (g in gens2f) {
+            gens.add(g)
+        }
 
         println("phase ${i + 1} of $n")
     }
@@ -150,7 +211,7 @@ fun bcToAr(c: Collection<Collection<Int>>, n: Int): Array<Array<Boolean>> {
 }
 
 fun main(args: Array<String>) {
-    val n = 10
+    val n = 25
 
     val arV = ArrayList<ArrayList<Int>>().apply {
         for (i in 1..n) {
@@ -171,16 +232,16 @@ fun main(args: Array<String>) {
     arH[3].add(2)
     arH[4].add(2)
     arH[4].add(2)
-    //arH[5].add(1)
+    arH[5].add(1)
 
     arV[0].add(3)
     arV[1].add(3)
     arV[2].add(3)
     arV[3].add(2)
     arV[4].add(2)
-    //arV[5].add(1)
+    arV[5].add(1)
 
-    val bc = buildConfigs(arH, n)
+    val bc = buildConfigs(arH, arV, n)
 
     for (c in bc) {
         val ar = bcToAr(c, n)
