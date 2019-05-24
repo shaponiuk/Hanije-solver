@@ -1,10 +1,9 @@
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashSet
 
 fun buildBasicConfig(config: Collection<Int>, n: Int): Array<Array<Boolean>> {
-    val ar = Array<Array<Boolean>>(n) {
-        Array<Boolean>(n) {
+    val ar = Array(n) {
+        Array(n) {
             false
         }
     }
@@ -22,24 +21,24 @@ fun buildBasicConfig(config: Collection<Int>, n: Int): Array<Array<Boolean>> {
 fun genCombinations(gens: ArrayList<HashSet<Collection<Int>>>): Collection<HashSet<Collection<Int>>> {
     val al = ArrayList<HashSet<Collection<Int>>>()
 
-    if (gens.size == 0) {
-        return al
-    } else if (gens.size == 1) {
-        return gens
-    } else {
-        for (i in 1..(gens.size - 2)) {
-            al.add(gens[i])
-        }
-
-        val al2 = genCombinations(al)
-
-        for (c in al2) {
-            for (c2 in gens[gens.size - 1]) {
-                c.add(c2)
+    when {
+        gens.size == 0 -> return al
+        gens.size == 1 -> return gens
+        else -> {
+            for (i in 1..(gens.size - 2)) {
+                al.add(gens[i])
             }
-        }
 
-        return al2
+            val al2 = genCombinations(al)
+
+            for (c in al2) {
+                for (c2 in gens[gens.size - 1]) {
+                    c.add(c2)
+                }
+            }
+
+            return al2
+        }
     }
 }
 
@@ -59,7 +58,7 @@ fun buildConfigs(vC: List<List<Int>>, n: Int): Collection<Collection<Collection<
 
     if (gens.isEmpty()) {
         val al = ArrayList<ArrayList<Int>>().apply {
-            add(ArrayList<Int>())
+            add(ArrayList())
         }
 
         gens.add(al)
@@ -69,20 +68,20 @@ fun buildConfigs(vC: List<List<Int>>, n: Int): Collection<Collection<Collection<
 
     for (i in 1 until n) {
         val gen2a = CombinationsGenerator().generate(n, vC[i].sum())
-        var gens2 = ArrayList<ArrayList<ArrayList<Int>>>()
+        val gens2 = ArrayList<ArrayList<ArrayList<Int>>>()
 
         var gen2 = gen2a.filter {
             var new = true
             val alb = ArrayList<Boolean>().apply {
-                for (i in 0 until n) {
+                for (j in 0 until n) {
                     add(false)
                 }
             }
 
             val ali = ArrayList<Int>()
 
-            for (i in it) {
-                alb[i - 1] = true
+            for (j in it) {
+                alb[j - 1] = true
             }
 
             for (a in alb) {
@@ -151,7 +150,7 @@ fun bcToAr(c: Collection<Collection<Int>>, n: Int): Array<Array<Boolean>> {
 }
 
 fun main(args: Array<String>) {
-    val n = 11
+    val n = 10
 
     val arV = ArrayList<ArrayList<Int>>().apply {
         for (i in 1..n) {
