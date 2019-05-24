@@ -1,9 +1,4 @@
 import ConfigToArray.Companion.bcToAr
-import kotlin.collections.ArrayList
-
-
-
-
 
 fun main(args: Array<String>) {
 
@@ -22,10 +17,10 @@ fun main(args: Array<String>) {
             for (a1 in ar) {
                 var str = ""
                 for (a2 in a1) {
-                    if (a2) {
-                        str += "*"
+                    str += if (a2) {
+                        "*"
                     } else {
-                        str += "."
+                        "."
                     }
                 }
                 println(str)

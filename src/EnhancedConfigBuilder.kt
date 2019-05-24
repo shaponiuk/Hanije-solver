@@ -22,7 +22,10 @@ class EnhancedConfigBuilder {
                 }
             }
 
+            val last = ali.lastOrNull()
+
             if (!new) {
+
                 ali.removeAt(ali.size - 1)
             }
 
@@ -39,6 +42,12 @@ class EnhancedConfigBuilder {
                             return false
                         }
                     }
+                }
+            }
+
+            if (ali.size + 1 <= constraint.size && !new && last != null) {
+                if (last > constraint[ali.size]) {
+                    return false
                 }
             }
         }
