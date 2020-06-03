@@ -56,9 +56,23 @@ class EnhancedConfigBuilder {
 
     fun buildConfigs(vC: List<List<Int>>, hC: List<List<Int>>, n: Int): Collection<Collection<Array<Int>>> {
         var gens = ArrayList<ArrayList<Array<Int>>>()
-
-        val sum = vC[0].sum()
-        val gen = CombinationsGenerator().generate(n, sum)
+        println(vC)
+        val genn1 = CombinationsGenerator().generateForHanije(0, n, vC[0].reversed(), vC[0].size).map {
+            val nMap = Array(vC[0].sum()) { 0 }
+            var arId = 0
+            for ((id, constraint) in vC[0].withIndex()) {
+                for (j in 0 until constraint) {
+                    nMap[arId] =
+                        j + it[id]
+                    arId++
+                }
+            }
+            nMap
+        }
+        println("genn1: ${smallArrayToString(genn1)}")
+//        val genn2 = CombinationsGenerator().generate(n, vC[0].sum())
+        val gen = genn1
+//        println("genn2: ${smallArrayToString(genn2)}")
 
         for (g in gen) {
             val hs = ArrayList<Array<Int>>().apply {
