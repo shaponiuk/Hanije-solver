@@ -26,9 +26,6 @@
   <component name="ChangeListManager">
     <list default="true" id="143c2f58-cd60-4216-88a6-544305e7418b" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/InnePuzzle_jar/InnePuzzle.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/InnePuzzle_jar/InnePuzzle.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/InnePuzzle/EnhancedConfigBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/InnePuzzle/EnhancedConfigBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/EnhancedConfigBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/EnhancedConfigBuilder.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,7 +91,7 @@
       <option name="presentableId" value="Default" />
       <updated>1558104881254</updated>
       <workItem from="1591199983054" duration="953000" />
-      <workItem from="1591200949537" duration="7834000" />
+      <workItem from="1591200949537" duration="9113000" />
     </task>
     <servers />
   </component>
