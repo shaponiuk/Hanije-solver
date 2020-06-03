@@ -79,48 +79,55 @@ class EnhancedConfigBuilder {
         println("phase 1 of $n")
 
         for (i in 1 until n) {
-            val gen2a = CombinationsGenerator().generate(n, vC[i].sum())
+//            val gen2a = CombinationsGenerator().generate(n, vC[i].sum())
             println(vC[i])
-//            val gen2a = CombinationsGenerator().generateForHanije(0, n, vC[i].reversed(), vC[i].size)
-            for (eee in gen2a) {
-                for (aaa in eee) {
-                    print("$aaa ")
-                }
-                println()
-            }
+            val gen2a = CombinationsGenerator().generateForHanije(0, n, vC[i].reversed(), vC[i].size)
+//            for (eee in gen2a) {
+//                for (aaa in eee) {
+//                    print("$aaa ")
+//                }
+//                println()
+//            }
             val gens2 = ArrayList<ArrayList<Array<Int>>>()
 
-            var gen2 = gen2a.filter {
-                var new = true
-                val alb = BooleanArray(n) { false }
-
-                val ali = ArrayList<Int>()
-
-                for (j in it) {
-                    alb[j - 1] = true
-                }
-
-                for (a in alb) {
-                    if (a) {
-                        if (new) {
-                            ali.add(1)
-                            new = false
-                        } else {
-                            ali[ali.size - 1] = ali[ali.size - 1] + 1
-                        }
-                    } else {
-                        new = true
+//            var gen2 = gen2a.filter {
+//                var new = true
+//                val alb = BooleanArray(n) { false }
+//
+//                val ali = ArrayList<Int>()
+//
+//                for (j in it) {
+//                    alb[j - 1] = true
+//                }
+//
+//                for (a in alb) {
+//                    if (a) {
+//                        if (new) {
+//                            ali.add(1)
+//                            new = false
+//                        } else {
+//                            ali[ali.size - 1] = ali[ali.size - 1] + 1
+//                        }
+//                    } else {
+//                        new = true
+//                    }
+//                }
+//
+//                ali == vC[i]
+//            }
+            var gen2 = gen2a.map {
+                val nMap = Array(vC[i].sum()) { 0 }
+                var id = 0
+                var arId = 0
+                for (constraint in vC[i]) {
+                    for (j in 0 until constraint) {
+                        nMap[arId] =
+                            j + it[id]
+                        arId++
                     }
+                    id++
                 }
-
-                ali == vC[i]
-            }
-//            var gen2 = gen2a
-            for (eee in gen2) {
-                for (aaa in eee) {
-                    print("$aaa ")
-                }
-                println()
+                nMap
             }
 
             if (gen2.isEmpty()) {
@@ -130,6 +137,8 @@ class EnhancedConfigBuilder {
 
                 gen2 = al
             }
+
+            println("generated")
 
             for (g in gens) {
                 for (g2 in gen2) {
