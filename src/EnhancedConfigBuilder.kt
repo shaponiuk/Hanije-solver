@@ -2,7 +2,7 @@ import ConfigToArray.Companion.bcToAr
 
 class EnhancedConfigBuilder {
 
-    private fun gFilter(config: List<List<Int>>, hC: List<List<Int>>, k: Int, n: Int): Boolean {
+    private fun gFilter(config: List<Array<Int>>, hC: List<List<Int>>, k: Int, n: Int): Boolean {
         val ar = bcToAr(config, n)
 
         for ((col, constraint) in hC.withIndex()) {
@@ -25,7 +25,6 @@ class EnhancedConfigBuilder {
             val last = ali.lastOrNull()
 
             if (!new) {
-
                 ali.removeAt(ali.size - 1)
             }
 
@@ -55,14 +54,14 @@ class EnhancedConfigBuilder {
         return true
     }
 
-    fun buildConfigs(vC: List<List<Int>>, hC: List<List<Int>>, n: Int): Collection<Collection<Collection<Int>>> {
-        var gens = ArrayList<ArrayList<ArrayList<Int>>>()
+    fun buildConfigs(vC: List<List<Int>>, hC: List<List<Int>>, n: Int): Collection<Collection<Array<Int>>> {
+        var gens = ArrayList<ArrayList<Array<Int>>>()
 
         val sum = vC[0].sum()
         val gen = CombinationsGenerator().generate(n, sum)
 
         for (g in gen) {
-            val hs = ArrayList<ArrayList<Int>>().apply {
+            val hs = ArrayList<Array<Int>>().apply {
                 add(g)
             }
 
@@ -70,8 +69,8 @@ class EnhancedConfigBuilder {
         }
 
         if (gens.isEmpty()) {
-            val al = ArrayList<ArrayList<Int>>().apply {
-                add(ArrayList())
+            val al = ArrayList<Array<Int>>().apply {
+                add(Array(0) { 0 })
             }
 
             gens.add(al)
@@ -81,15 +80,19 @@ class EnhancedConfigBuilder {
 
         for (i in 1 until n) {
             val gen2a = CombinationsGenerator().generate(n, vC[i].sum())
-            val gens2 = ArrayList<ArrayList<ArrayList<Int>>>()
+            println(vC[i])
+//            val gen2a = CombinationsGenerator().generateForHanije(0, n, vC[i].reversed(), vC[i].size)
+            for (eee in gen2a) {
+                for (aaa in eee) {
+                    print("$aaa ")
+                }
+                println()
+            }
+            val gens2 = ArrayList<ArrayList<Array<Int>>>()
 
             var gen2 = gen2a.filter {
                 var new = true
-                val alb = ArrayList<Boolean>().apply {
-                    for (j in 0 until n) {
-                        add(false)
-                    }
-                }
+                val alb = BooleanArray(n) { false }
 
                 val ali = ArrayList<Int>()
 
@@ -112,10 +115,17 @@ class EnhancedConfigBuilder {
 
                 ali == vC[i]
             }
+//            var gen2 = gen2a
+            for (eee in gen2) {
+                for (aaa in eee) {
+                    print("$aaa ")
+                }
+                println()
+            }
 
             if (gen2.isEmpty()) {
-                val al = ArrayList<ArrayList<Int>>().apply {
-                    add(ArrayList<Int>())
+                val al = ArrayList<Array<Int>>().apply {
+                    add(Array(0) { 0 })
                 }
 
                 gen2 = al
@@ -123,20 +133,17 @@ class EnhancedConfigBuilder {
 
             for (g in gens) {
                 for (g2 in gen2) {
-                    val gc = ArrayList<ArrayList<Int>>().apply {
-                        for (gp in g) {
-                            add(gp)
-                        }
-                    }
+                    val gc = ArrayList<Array<Int>>(g)
                     gc.add(g2)
                     gens2.add(gc)
                 }
             }
 
+            println("pre")
             val gens2f = gens2.filter {
                 gFilter(it, hC, i + 1, n)
             }
-
+            println("post")
             gens = ArrayList()
 
             for (g in gens2f) {
